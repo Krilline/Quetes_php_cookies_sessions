@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php session_start(); ?>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -13,6 +14,12 @@
 </head>
 <body>
 <header>
+    <?php
+        if(isset($_POST['logout'])){
+            unset($_SESSION['login']);
+            session_destroy();
+        }
+    ?>
     <!-- MENU ENTETE -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
@@ -34,20 +41,33 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Chocolates chips</a></li>
-                    <li><a href="#">Nuts</a></li>
-                    <li><a href="#">Gluten full</a></li>
-                    <li>
-                        <a href="/cart.php" class="btn btn-warning navbar-btn">
-                            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-                            Cart
-                        </a>
-                    </li>
+                <?php if(isset($_SESSION['login']) && $_SESSION['login'] === true){ 
+                    ?>
+                        <li><a href="#">Chocolates chips</a></li>
+                        <li><a href="#">Nuts</a></li>
+                        <li><a href="#">Gluten full</a></li>
+                        <li>
+                            <a href="/cart.php" class="btn btn-warning navbar-btn">
+                                <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                        Cart
+                            </a>
+                        </li>
+                        <li>
+                            <form method="POST">
+                                <button class="btn btn-warning navbar-btn" type="submit" name="logout">Logout</button>
+                            </form>
+                        </li>
+                        <?php } else { echo "";}?>
+                        <?php
+                        if (!isset($_SESSION['login']) && $_SESSION['login'] == false){
+                    ?>
+                        <li><a href="/login.php">Login</a></li>
+                    <?php } else { echo "";} ?>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
     <div class="container-fluid text-right">
-        <strong>Hello Wilder !</strong>
+        <strong>Hello Wilder <?= $_SESSION['loginname'];?></strong>
     </div>
 </header>

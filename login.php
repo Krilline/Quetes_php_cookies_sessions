@@ -1,4 +1,16 @@
-<?php require 'inc/head.php'; ?>
+<?php require 'inc/head.php';
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if(!empty($_POST['loginname'])){
+            $_SESSION['login'] = true;
+            $_SESSION['loginname'] = $_POST['loginname'];
+            if($_SESSION['login'] === true){
+                Header('Location: http://localhost:8000/index.php');
+            }
+        }else{
+            $error['loginname'] = "Veuillez entrer un nom d'utilisateur";
+        }
+    }
+?>
 <div class="container" style="margin-top:40px">
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
@@ -7,7 +19,7 @@
                     <strong> Sign in to continue</strong>
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="#" method="POST">
+                    <form role="form" method="POST">
                         <fieldset>
                             <div class="row">
                                 <div class="center-block">
@@ -25,6 +37,7 @@
                                             </span>
                                             <input class="form-control" placeholder="Username" name="loginname"
                                                    type="text" autofocus>
+                                                   <?php if(isset($error['loginname'])) echo $error['loginname'] ;?>
                                         </div>
                                     </div>
                                     <div class="form-group">
